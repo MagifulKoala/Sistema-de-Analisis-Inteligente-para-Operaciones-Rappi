@@ -6,5 +6,5 @@ venv
 .env
 
 #data
-clean_data/*
-raw_data/*
+datasets/clean_data/*
+datasets/raw_data/*
