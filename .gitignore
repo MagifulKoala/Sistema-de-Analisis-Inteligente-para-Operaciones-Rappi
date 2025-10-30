@@ -4,3 +4,7 @@ venv
 
 #environmental variables
 .env
+
+#data
+clean_data/*
+raw_data/*
