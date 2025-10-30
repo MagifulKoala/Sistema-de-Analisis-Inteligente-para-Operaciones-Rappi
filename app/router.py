@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from app.auth import router as auth_router, get_current_user
 from celery.result import AsyncResult
-from app.worker import talk_with_ai
+import app.worker as worker
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -18,8 +18,18 @@ def read_root():
 @app.post("/talk_with_ai")
 async def talk_with_ai_endpoint(req: TalkWithAIRequest, user=Depends(get_current_user)):
     # Queue the task with Celery
-    print(f" the type for the message is: {type(req.message)}")
-    task = talk_with_ai.delay(req.message)
+    task = worker.delay(req.message)
+    
+    return {
+        "message": "AI request queued",
+        "task_id": task.id,
+        "user_id": user.user.id
+    }
+    
+@app.post("/ask_bot")
+async def ask_ai_to_execute_function(req: TalkWithAIRequest, user=Depends(get_current_user)):
+    # Queue the task with Celery
+    task = worker.ask_bot.delay(req.message)
     
     return {
         "message": "AI request queued",

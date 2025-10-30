@@ -1,5 +1,5 @@
 from celery import Celery
-from app.gemini import ask_ai_something
+import app.gemini as gemini
 
 app = Celery(
     "tasks",
@@ -11,4 +11,8 @@ app.conf.result_expires = 3600
 
 @app.task
 def talk_with_ai(message: str):
-    return ask_ai_something(message)
+    return gemini.ask_ai_something(message)
+
+@app.task
+def ask_bot(message: str):
+    return gemini.ask_ai_to_execute_function(message)
