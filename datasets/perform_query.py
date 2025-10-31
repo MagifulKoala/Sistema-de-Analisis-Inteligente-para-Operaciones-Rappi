@@ -16,11 +16,12 @@ SAFE_GLOBALS = {
 }
 
 SAFE_LOCALS = {
-    "orders": df_orders,
-    "metrics": df_metrics,
+    "df_orders": df_orders,
+    "df_metrics": df_metrics,
 }
 
 def run_query(code: str):
+    print(f"executing run_query method for code: {code}")
     try:
         result = eval(code, SAFE_GLOBALS, SAFE_LOCALS)
         return {"result": result.to_dict() if hasattr(result, "to_dict") else str(result)}

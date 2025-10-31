@@ -28,12 +28,36 @@ def ask_ai_something(contents:str):
     
     
 def ask_ai_to_create_custom_function(contents:str):
+    print("executing ask_ai_to_create_custom_function")
     model="gemini-2.5-flash-lite"
     resp = client.models.generate_content(
         model = model,
         contents=instructions.get_instructions_custom_AI_queries(contents)
     )
-    return str(perform_query.run_query(resp.text))
+    print(f" current AI response: \n {resp.text} \n")
+    
+    if resp.text.split("|")[0].strip() == "-1":
+        answer = resp.text
+    else:
+        answer = str(perform_query.run_query(resp.text))
+    
+    return ai_analyze_results(
+        user_query=contents,
+        results=answer
+    )
+
+def ai_analyze_results(user_query:str, results:str)-> str:
+    model="gemini-2.5-flash-lite"
+    resp = client.models.generate_content(
+        model = model,
+        contents=instructions.get_instructions_data_interpretation(user_query=user_query, query_results=results)
+    )
+    print(f"Response for ai_analyze_results is : {resp.text}")
+    return {
+        "user_query" : user_query,
+        "query_results" : results,
+        "analysis" : resp.text
+    }
 
 def ask_ai_to_execute_function(contents: str):
     
