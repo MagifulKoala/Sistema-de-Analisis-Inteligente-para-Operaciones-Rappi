@@ -8,3 +8,4 @@ venv
 #data
 datasets/clean_data/*
 datasets/raw_data/*
+datasets/summary_data/*
