@@ -16,3 +16,7 @@ def talk_with_ai(message: str):
 @app.task
 def ask_bot(message: str):
     return gemini.ask_ai_to_execute_function(message)
+
+@app.task
+def ask_bot_custom_query(message: str):
+    return gemini.ask_ai_to_create_custom_function(message)

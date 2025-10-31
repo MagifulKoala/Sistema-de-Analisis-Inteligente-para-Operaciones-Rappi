@@ -6,6 +6,7 @@ import os
 import app.function_definitions as fd
 import app.functions as f 
 import app.instructions as instructions
+import datasets.perform_query as perform_query
 
 load_dotenv()
 
@@ -23,8 +24,16 @@ def ask_ai_something(contents:str):
         model = model,
         contents=contents
     )
-    
     return resp.text
+    
+    
+def ask_ai_to_create_custom_function(contents:str):
+    model="gemini-2.5-flash-lite"
+    resp = client.models.generate_content(
+        model = model,
+        contents=instructions.get_instructions_custom_AI_queries(contents)
+    )
+    return str(perform_query.run_query(resp.text))
 
 def ask_ai_to_execute_function(contents: str):
     

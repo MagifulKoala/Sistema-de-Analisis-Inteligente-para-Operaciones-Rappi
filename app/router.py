@@ -37,6 +37,17 @@ async def ask_ai_to_execute_function(req: TalkWithAIRequest, user=Depends(get_cu
         "user_id": user.user.id
     }
     
+@app.post("/ask_bot_custom_query")
+async def ask_ai_to_create_custom_query(req: TalkWithAIRequest, user=Depends(get_current_user)):
+    # Queue the task with Celery
+    task = worker.ask_bot.delay(req.message)
+    
+    return {
+        "message": "AI request queued",
+        "task_id": task.id,
+        "user_id": user.user.id
+    }
+    
     
 @app.get("/task/{task_id}")
 async def get_task_status(task_id: str, user=Depends(get_current_user)):

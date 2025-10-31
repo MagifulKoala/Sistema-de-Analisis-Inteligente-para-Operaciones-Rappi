@@ -4,8 +4,8 @@ import numpy as np
 import os
 #%%
 #clean file paths
-csv_file_path = r"clean_data\Rappi - Dummy Data - RAW_ORDERS.csv"
-#csv_file_path = r"clean_data\Rappi - Dummy Data - RAW_INPUT_METRICS.csv"
+#csv_file_path = r"clean_data\Rappi - Dummy Data - RAW_ORDERS.csv"
+csv_file_path = r"clean_data\Rappi - Dummy Data - RAW_INPUT_METRICS.csv"
 
 # Load the CSV files
 df_current = pd.read_csv(csv_file_path)
