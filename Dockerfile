@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# copy app
+# copy app & datasets
 COPY app /app/app
+COPY datasets /app/datasets
 
 # expose port
 EXPOSE 8000

@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-orders_file_path = r"clean_data\Rappi - Dummy Data - RAW_ORDERS.csv"
-metrics_file_path = r"clean_data\Rappi - Dummy Data - RAW_INPUT_METRICS.csv"
+orders_file_path = r"datasets/clean_data/Rappi - Dummy Data - RAW_ORDERS.csv"
+metrics_file_path = r"datasets/clean_data/Rappi - Dummy Data - RAW_INPUT_METRICS.csv"
 
 # Load the CSV files
 df_orders = pd.read_csv(orders_file_path)
