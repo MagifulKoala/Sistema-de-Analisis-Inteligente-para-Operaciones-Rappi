@@ -3,6 +3,7 @@ from app.auth import router as auth_router, get_current_user
 from celery.result import AsyncResult
 import app.worker as worker
 from pydantic import BaseModel
+import app.conversation_store as conversation_store
 
 app = FastAPI()
 app.include_router(auth_router)
@@ -40,7 +41,10 @@ async def ask_ai_to_execute_function(req: TalkWithAIRequest, user=Depends(get_cu
 @app.post("/ask_bot_custom_query")
 async def ask_ai_to_create_custom_query(req: TalkWithAIRequest, user=Depends(get_current_user)):
     # Queue the task with Celery
-    task = worker.ask_bot_custom_query.delay(req.message)
+    task = worker.ask_bot_custom_query.delay(
+        message = req.message,
+        user_id = user.user.id 
+    )
     
     return {
         "message": "AI request queued",
@@ -48,6 +52,19 @@ async def ask_ai_to_create_custom_query(req: TalkWithAIRequest, user=Depends(get
         "user_id": user.user.id
     }
     
+@app.delete("/conversation/clear")
+async def clear_conversation(user=Depends(get_current_user)):
+    conversation_store.clear_conversation(user.user.id)
+    return {"message": "Conversation history cleared"}
+
+@app.get("/conversation/history")
+async def get_conversation_history(user=Depends(get_current_user)):
+    history = conversation_store.get_conversation_history(user.user.id)
+    return {
+        "user_id": user.user.id,
+        "message_count": len(history),
+        "history": history
+    }
     
 @app.get("/task/{task_id}")
 async def get_task_status(task_id: str, user=Depends(get_current_user)):

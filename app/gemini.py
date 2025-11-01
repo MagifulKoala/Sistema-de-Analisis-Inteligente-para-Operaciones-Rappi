@@ -27,24 +27,35 @@ def ask_ai_something(contents:str):
     return resp.text
     
     
-def ask_ai_to_create_custom_function(contents:str):
+def ask_ai_to_create_custom_function(contents:str, conversation_history:list = None):
     print("executing ask_ai_to_create_custom_function")
+    
     model="gemini-2.5-flash-lite"
+    if conversation_history is None:
+        conversation_history = []
+    
     resp = client.models.generate_content(
         model = model,
-        contents=instructions.get_instructions_custom_AI_queries(contents)
+        contents=instructions.get_instructions_custom_AI_queries(
+            user_instructions=contents,
+            chat_history = str(conversation_history)
+            )
     )
     print(f" current AI response: \n {resp.text} \n")
     
     if resp.text.split("|")[0].strip() == "-1":
-        answer = resp.text
+        result = resp.text
     else:
         answer = str(perform_query.run_query(resp.text))
+        result =  ai_analyze_results(
+            user_query=contents,
+            results=answer
+        )
     
-    return ai_analyze_results(
-        user_query=contents,
-        results=answer
-    )
+    return {
+        "response": result,
+        "conversation_history": conversation_history + [resp.text]
+    }
 
 def ai_analyze_results(user_query:str, results:str)-> str:
     model="gemini-2.5-flash-lite"
