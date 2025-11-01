@@ -82,7 +82,40 @@ POST /ask_bot_custom_query
 
 La respuesta incluirá un `task_id`.
 
-### **Consultar la respuesta del bot**
+#### **Generación de insights automáticos**
+
+Endpoint:
+
+```
+POST /generate_insights
+```
+
+Este endpoint genera y retorna insights automáticos sobre los conjuntos de datos proporcionados.
+Requiere un Bearer Token para autenticación.
+
+Requiere autenticación:
+Incluye el token de acceso en el encabezado:
+
+Authorization: Bearer <access_token>
+
+
+Formato de respuesta (JSON):
+
+```JSON
+{
+  "result": {
+    "title": "Automatic Insights",
+    "analysis": "<contenido>",
+    "raw_insights": "<contenido>",
+    "orders_summary": "<contenido>",
+    "metrics_summary": "<contenido>",
+    "insights_file_path": "<contenido>",
+    "generated_at": "<contenido>"
+  }
+}
+```
+
+### **Consultar la respuestas de tareas**
 
 **Endpoint:**
 
@@ -108,6 +141,9 @@ Incluye el token de acceso en el encabezado:
 ```
 Authorization: Bearer <access_token>
 ```
+---
+
+Nota: Para mayor conveniencia dentro de la carpeta principal se puede encontrar el archivo **Rappi.postman_collection.json**. Este contiene la colección de peticiones necesarias para probar la funcionalidad del proyecto.
 
 ---
 

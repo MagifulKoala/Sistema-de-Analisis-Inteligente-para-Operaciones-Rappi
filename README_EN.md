@@ -7,13 +7,13 @@ This project implements a **Data Conversational Bot** and an **Automatic Insight
 ## ⚙️ Technologies and Architecture
 
 The project was developed in **Python** and runs within a **Dockerized environment**.
-Below is a summary of the main components:
+Below is a summary of the system’s main components:
 
-* **FastAPI** → Defines the main endpoints to interact with the system's functionalities.
-* **Celery** → Manages the task queue for heavy endpoints.
+* **FastAPI** → Defines the main endpoints to interact with the system’s functionalities.
+* **Celery** → Manages the task queue for heavy or long-running endpoints.
 * **Redis** → Serves as a message broker and database for storing chat history.
 * **Supabase** → Handles user authentication and registration.
-* **Gemini API (free version)** → Powers the conversational bot and automatic insights generation.
+* **Gemini API (free version)** → Powers the conversational bot and the automatic insight generation.
 
 ---
 
@@ -29,13 +29,13 @@ Contains the system’s core logic:
 * Redis connections
 * Celery worker
 * Gemini integrations
-* Asynchronous task management and responses
+* Asynchronous task handling and response management
 
 ### **datasets/**
 
 Includes:
 
-* `.csv` files with test data
+* `.csv` files with sample data
 * Python modules for performing analysis and extracting metrics from the datasets
 
 ---
@@ -43,17 +43,17 @@ Includes:
 ## 🚀 Running the Project
 
 1. **Create the `.env` file** in the project root following the `.env.template` model.
-   Make sure to fill out **all required fields** before proceeding.
+   Make sure to fill in **all required fields** before proceeding.
 
-2. **Verify that Docker is installed** on your machine.
+2. **Ensure that Docker is installed** on your machine.
 
-3. From the terminal, in the project root directory, run:
+3. From the terminal, at the project root, run:
 
    ```bash
    docker compose up --build
    ```
 
-   If everything is set up correctly, the project should build and launch successfully.
+   If everything is configured correctly, the project should build and launch successfully.
 
 ---
 
@@ -64,7 +64,7 @@ It is recommended to use **Postman** to interact with the available endpoints.
 > ⚠️ Most endpoints require an authenticated user.
 > Register and log in to obtain a valid `access_token`.
 
-### **Interacting with the Bot**
+### **Bot Interaction**
 
 **Endpoint:**
 
@@ -82,7 +82,45 @@ POST /ask_bot_custom_query
 
 The response will include a `task_id`.
 
-### **Retrieve the Bot’s Response**
+---
+
+### **Automatic Insights Generation**
+
+**Endpoint:**
+
+```
+POST /generate_insights
+```
+
+This endpoint generates and returns **automatic insights** based on the provided datasets.
+A **Bearer Token** is required for authentication.
+
+**Authentication required:**
+Include the access token in the header:
+
+```
+Authorization: Bearer <access_token>
+```
+
+**Response format (JSON):**
+
+```json
+{
+  "result": {
+    "title": "Automatic Insights",
+    "analysis": "<content>",
+    "raw_insights": "<content>",
+    "orders_summary": "<content>",
+    "metrics_summary": "<content>",
+    "insights_file_path": "<content>",
+    "generated_at": "<content>"
+  }
+}
+```
+
+---
+
+### **Retrieve Task Responses**
 
 **Endpoint:**
 
@@ -90,7 +128,7 @@ The response will include a `task_id`.
 GET /task/{task_id}
 ```
 
-Replace `{task_id}` with the value returned in the previous request.
+Replace `{task_id}` with the value returned in the previous call.
 
 ---
 
@@ -102,12 +140,16 @@ Replace `{task_id}` with the value returned in the previous request.
 GET /conversation/history
 ```
 
-**Requires authentication:**
-Include the access token in the request header:
+**Authentication required:**
+Include the access token in the header:
 
 ```
 Authorization: Bearer <access_token>
 ```
+
+---
+
+Note: For convenience, within the main folder you can find the file Rappi.postman_collection.json. This file contains the collection of requests needed to test the project’s functionality.
 
 ---
 
