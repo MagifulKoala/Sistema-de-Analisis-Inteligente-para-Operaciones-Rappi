@@ -7,6 +7,30 @@ def get_data_from_file(file_path: str) -> str:
     with open(file_path, "r", encoding="utf-8") as f:
         return f.read()
 
+AUTOMATED_INSIGHTS_REPORT = """
+Genera un reporte ejecutivo estructurado basado en los insights automáticos proporcionados.
+
+    El reporte debe incluir:
+
+    1. RESUMEN EJECUTIVO
+    - Top 3-5 hallazgos más críticos que requieren atención inmediata
+    - Impacto potencial de cada hallazgo
+
+    2. ANÁLISIS DETALLADO POR CATEGORÍA
+    - Anomalías: Interpretación y causas posibles
+    - Tendencias preocupantes: Riesgos y proyecciones
+    - Benchmarking: Brechas de rendimiento y mejores prácticas
+    - Correlaciones: Relaciones clave entre métricas
+
+    3. RECOMENDACIONES ACCIONABLES
+    - Acciones específicas para cada hallazgo crítico
+    - Priorización de iniciativas (corto, mediano, largo plazo)
+    - Recursos o áreas responsables sugeridas
+
+    Usa un tono profesional pero claro. Sé específico y práctico en las recomendaciones.
+"""
+
+
 GENERAL_PROMPT = """
 You will be asked a specific question. Determine if there is a prebuilt function that you were passed on
 that answers the question you were asked. If there is no available function, answer the question

@@ -65,7 +65,17 @@ async def get_conversation_history(user=Depends(get_current_user)):
         "message_count": len(history),
         "history": history
     }
+
+@app.get("/generate_insights")
+async def generate_insights_endpoint(user=Depends(get_current_user)):
+    task = worker.generate_insights.delay()
     
+    return {
+        "message": "Insights generation queued",
+        "task_id": task.id,
+        "user_id": user.user.id
+    }
+
 @app.get("/task/{task_id}")
 async def get_task_status(task_id: str, user=Depends(get_current_user)):
     task_result = AsyncResult(task_id)
